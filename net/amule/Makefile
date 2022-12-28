@@ -42,6 +42,19 @@ define Package/amule
 	$(ICONV_DEPENDS) $(INTL_DEPENDS) +!AMULE_CRYPTOPP_STATIC_LINKING:libcryptopp
 endef
 
+define Download/AmuleWebUI
+  URL:=https://github.com/MatteoRagni/AmuleWebUI-Reloaded/archive
+  URL_FILE:=master.zip
+  FILE:=AmuleWebUI.zip
+  HASH:=skip
+endef
+
+define Build/Prepare
+	$(call Build/Prepare/Default)
+	unzip $(DL_DIR)/AmuleWebUI.zip -d $(PKG_BUILD_DIR)
+	
+endef
+
 CONFIGURE_ARGS+= \
 	--disable-static \
 	--disable-rpath \
@@ -103,6 +116,7 @@ define Package/amule/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/amule{cmd,d} $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/webserver/src/amuleweb $(1)/usr/bin/
 	$(CP) $(PKG_BUILD_DIR)/src/webserver/default $(1)/usr/share/amule/webserver
+	$(CP) $(PKG_BUILD_DIR)/AmuleWebUI-Reloaded-master $(1)/usr/share/amule/webserver/AmuleWebUI-Reloaded
 	
 endef
 
